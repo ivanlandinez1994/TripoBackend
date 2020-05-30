@@ -1,0 +1,68 @@
+<%- include('masterPage/_header'); -%>
+
+<div class="container">
+    <div class="row">
+        <div class="col-m5">
+            <div class ="card">
+                <div class="card-body"> 
+                    <form action="/users/add" method="POST">
+                        <div class="form-group">
+                            <input type="text" name="nombre" placeholder="inserte nombre" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="apellido" placeholder="inserte apellido" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="dni" placeholder="inserte dni" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <input type="date" name="fechaNacimiento" placeholder="inserte fechaNacimiento" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" name="status" placeholder="status" class="form-control">
+                        </div>
+
+                        <button type="submit" class = "btn btn-primary"> 
+                            Agregar
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-m7">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>   
+                        <th>id_</th>
+                        <th>nombre</th>
+                        <th>apellido</th>
+                        <th>dni</th>
+                        <th>fecha nacimiento</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for(var i=0; i<users.length; i++) { %>
+                        <tr>
+                            <td><%= users[i]._id%></td>
+                            <td><%= users[i].nombre%></td>
+                            <td><%= users[i].apellido%></td>
+                            <td><%= users[i].dni%></td>
+                            <td><%= users[i].fechaNacimiento%></td>
+                            <td>
+                                <a href="/users/aprobar/<%= users[i]._id %>" 
+                                    class="btn <%= users[i].status ? 'btn-success' : 'btn-dark' %>">
+                                    Aprobar
+                                </a>
+                                <a href="/users/update/<%= users[i]._id %>" class="btn btn-info">Update</a>
+                                <a href="/users/delete/<%= users[i]._id %>" class="btn btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                    <%  } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<%-include('masterPage/_footer');-%>

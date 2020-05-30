@@ -1,0 +1,10 @@
+en el package.json 
+"scripts": {
+    "start": "node src/app.js", //npm start para levantar el server
+    "dev": "nodemon src/app.js" //cualquier otro comando diferente al star debe llevar el run, nodemon es para actualiza automaticamente sin ejecutar nuevamente.
+  },
+es para que luego yo al presionar npm start me levante el server
+
+paquetes
+npm install express mongoose ejs morgan
+npm i nodemon -D
