@@ -26,7 +26,7 @@ router.post('/add', (req,res)=>{
 
 router.delete('/delete/:id', (req,res)=>{
     const { id } = req.params;
-    schema.remove({_id:id})
+    schema.deleteOne({_id:id})
     .then(()=>{
         res.redirect('/users');
     })
@@ -47,7 +47,7 @@ router.get('/update/:id', (req,res)=>{
 
 router.put('/update/:id', (req,res)=>{
     const { id } = req.params;
-    schema.update({_id:id}, req.body)
+    schema.updateOne({_id:id}, req.body)
     .then(()=>{
         res.redirect('/users');
     })
