@@ -2,16 +2,14 @@ const express = require('express');
 const router = express.Router();
 const chalk = require('chalk');
 
-const schema = require('../models/schema');
+const schema = require('../models/schemaUser');
 
 router.get('/', (req, res)=>{
     schema.find() //trae los registros de la base de datos
     .then((users) => {
-        res.render('index', {
-            users
-        });
+        res.send(users);
     })
-    .catch(err => console.log(err));
+    .catch(err => res.send(chalk.red(err)));
 });
 
 router.post('/add', (req,res)=>{
@@ -21,7 +19,7 @@ router.post('/add', (req,res)=>{
         //res.redirect('/users');
         res.send(`Se agrego el usuario ${user.nombre} correctamente`)
     })
-    .catch(err=>console.log(chalk.red(err)))
+    .catch(err => res.send(chalk.red(err)));
 });
 
 router.delete('/delete/:id', (req,res)=>{
@@ -37,7 +35,7 @@ router.delete('/delete/:id', (req,res)=>{
         //res.redirect('/users');
         res.send(`El usuario ${name} fue eliminado`)
     })
-    .catch(err => console.log(err));
+    .catch(err => res.send(chalk.red(err)));
 })
 
 router.get('/update/:id', (req,res)=>{
@@ -48,7 +46,7 @@ router.get('/update/:id', (req,res)=>{
             user
         })
     })
-    .catch(err => console.log(err));
+    .catch(err => res.send(chalk.red(err)));
 })
 
 router.put('/update/:id', (req,res)=>{
@@ -58,19 +56,19 @@ router.put('/update/:id', (req,res)=>{
         //res.redirect('/users');
         res.send(`El usuario ${req.body.nombre} fue actualizado`)
     })
-    .catch(err => console.log(err));
+    .catch(err => res.send(chalk.red(err)));
 })
 
 router.put('/aprobar/:id', (req,res)=>{
     const {id} = req.params;
     schema.findById(id)
     .then((user)=>{
-        user.status = !user.status;
+        user.activo = !user.activo;
         user.save();
         //res.redirect('/users');
-        res.send(`Estado del usuario: ${user.status?"Activo":"Inactivo"}`)
+        res.send(`Estado del usuario: ${user.activo?"Activo":"Inactivo"}`)
     })
-    .catch(err => console.log(err));
+    .catch(err => res.send(chalk.red(err)));
 })
 
 module.exports = router;

@@ -7,8 +7,13 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 const chalk = require('chalk');
 const indexRouter = require('./routes/index');
+const postsRouter = require('./routes/posts');
 const usersRouter = require('./routes/users');
 const bodyParser = require('body-parser');
+const dotenv = require('dotenv'); //se utiliza para variables de sesion "heroku"
+
+dotenv.config();
+
 
 // Configuración - view engine setup
 app.set('views', path.join(__dirname, 'views')); // Define carpeta de vistas
@@ -22,10 +27,11 @@ app.use(bodyParser.json())
 
 // Routers
 app.use('/', indexRouter);
+app.use('/posts', postsRouter);
 app.use('/users', usersRouter);
 
 // Connect to DB
-const uri = "mongodb+srv://admin:admin123@cluster0-hl2jl.mongodb.net/tripo?retryWrites=true&w=majority"; //Uri de acceso from mongo
+const uri = process.env.MONGOURI; //Uri de acceso from mongo
 mongoose.connect(uri, {useNewUrlParser:true, useUnifiedTopology:true}) //Intento de coneccion
 .then(result => console.log('Coneccion Correcta'))
 .catch(err => console.log(chalk.red(err)))
