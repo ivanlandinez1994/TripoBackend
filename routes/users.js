@@ -22,15 +22,15 @@ router.post('/add', (req,res)=>{
     .catch(err => res.send(chalk.red(err)));
 });
 
-router.delete('/delete/:id', (req,res)=>{
-    const { id } = req.params;
+router.delete('/delete/:user', (req,res)=>{
+    const { user } = req.params;
     var name;
-    schema.findById(id)
+    schema.findOne({userName:user})
     .then((user)=>{
         name = user.nombre;
     });
 
-    schema.deleteOne({_id:id})
+    schema.deleteOne({userName:user})
     .then(()=>{
         //res.redirect('/users');
         res.send(`El usuario ${name} fue eliminado`)
@@ -38,20 +38,18 @@ router.delete('/delete/:id', (req,res)=>{
     .catch(err => res.send(chalk.red(err)));
 })
 
-router.get('/update/:id', (req,res)=>{
-    const { id } = req.params;
-    schema.findById(id)
+router.get('/user/:user', (req,res)=>{
+    const { user } = req.params;
+    schema.findOne({userName:user})
     .then((user)=>{
-        res.render('edit', {
-            user
-        })
+        res.send(user)
     })
     .catch(err => res.send(chalk.red(err)));
 })
 
-router.put('/update/:id', (req,res)=>{
-    const { id } = req.params;
-    schema.updateOne({_id:id}, req.body)
+router.put('/update/:user', (req,res)=>{
+    const { user } = req.params;
+    schema.updateOne({userName:user}, req.body)
     .then(()=>{
         //res.redirect('/users');
         res.send(`El usuario ${req.body.nombre} fue actualizado`)
@@ -59,9 +57,9 @@ router.put('/update/:id', (req,res)=>{
     .catch(err => res.send(chalk.red(err)));
 })
 
-router.put('/aprobar/:id', (req,res)=>{
-    const {id} = req.params;
-    schema.findById(id)
+router.put('/aprobar/:user', (req,res)=>{
+    const {user} = req.params;
+    schema.findOne({userName:user})
     .then((user)=>{
         user.activo = !user.activo;
         user.save();

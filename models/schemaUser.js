@@ -57,25 +57,13 @@ const UserSchema = new Schema({ // se define una estructura con la que se guarda
         type: String,
         default: "usuario"
     },
-    publicaciones: [{
-        nombre: String,
-        descripcion: String,
-        ubicacion: [Number],
-        fotos: [String],
-        telefono: String,
-        horarios:[{
-            dia: Number,
-            horaApertura: Date,
-            horaFin: Date
-        }]
-    }],
     activo:{
         type: Boolean,
-        default: false
+        default: true
     },
 }, {
     versionKey: false, //elimina el __V ("Versionado")
-    collection: process.env.COLECCION 
+    collection: process.env.COLECCIONUSER 
 });
 
 UserSchema.virtual("password_confirmation").get(function(){
@@ -84,4 +72,4 @@ UserSchema.virtual("password_confirmation").get(function(){
     this.p_c=password;
 })
 
-module.exports = mongoose.model(process.env.COLECCION, UserSchema);
+module.exports = mongoose.model(process.env.COLECCIONUSER, UserSchema);

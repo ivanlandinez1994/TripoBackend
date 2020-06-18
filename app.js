@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const chalk = require('chalk');
-const indexRouter = require('./routes/index');
+const indexRouter = require('./routes/comment');
 const postsRouter = require('./routes/posts');
 const usersRouter = require('./routes/users');
 const bodyParser = require('body-parser');
@@ -26,7 +26,7 @@ app.use(bodyParser.urlencoded({ extended: true }));//interpretar parametros del 
 app.use(bodyParser.json())
 
 // Routers
-app.use('/', indexRouter);
+app.use('/comment', indexRouter);
 app.use('/posts', postsRouter);
 app.use('/users', usersRouter);
 
