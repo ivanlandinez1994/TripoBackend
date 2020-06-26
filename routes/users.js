@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const chalk = require('chalk');
+const auth = require('../middlewares/auth');
 
 const schema = require('../models/schemaUser');
 
-router.get('/', (req, res)=>{
+router.get('/', auth, (req, res)=>{
     schema.find() //trae los registros de la base de datos
     .then((users) => {
         res.send(users);
@@ -12,17 +13,45 @@ router.get('/', (req, res)=>{
     .catch(err => res.send(chalk.red(err)));
 });
 
-router.post('/add', (req,res)=>{
-    const Usuario = new schema(req.body);
-    Usuario.save() //guarda registro de la base de datos
-    .then((user) => {
-        //res.redirect('/users');
-        res.send(`Se agrego el usuario ${user.nombre} correctamente`)
+router.get('/user/:user', auth, (req,res)=>{
+    const { user } = req.params;
+    schema.findOne({userName:user})
+    .then((user)=>{
+        if (!user){
+            res.send("usuario no encontrado")
+        }else{
+            res.send(user)
+        }
     })
     .catch(err => res.send(chalk.red(err)));
-});
+})
 
-router.delete('/delete/:user', (req,res)=>{
+router.put('/update/:user', auth, (req,res)=>{
+    const { user } = req.params;
+    schema.updateOne({userName:user}, req.body, {runValidators:true})
+    .then(()=>{
+        //res.redirect('/users');
+        res.send(`El usuario fue actualizado`)
+    })
+    .catch(err => res.send(chalk.red(err)));
+})
+
+router.put('/activar/:user', auth, (req,res)=>{
+    const {user} = req.params;
+    schema.findOne({userName:user})
+    .then((user)=>{
+        user.activo = !user.activo;
+        user.save()
+        .then(()=>{
+            res.send(`Estado del usuario: ${user.activo?"Activo":"Inactivo"}`)
+        })
+        .catch(err => res.send(err.message));
+        //res.redirect('/users');
+    })
+    .catch(err => res.send(chalk.red(err)));
+})
+
+/*router.delete('/delete/:user', auth, (req,res)=>{
     const { user } = req.params;
     var name;
     schema.findOne({userName:user})
@@ -36,37 +65,6 @@ router.delete('/delete/:user', (req,res)=>{
         res.send(`El usuario ${name} fue eliminado`)
     })
     .catch(err => res.send(chalk.red(err)));
-})
-
-router.get('/user/:user', (req,res)=>{
-    const { user } = req.params;
-    schema.findOne({userName:user})
-    .then((user)=>{
-        res.send(user)
-    })
-    .catch(err => res.send(chalk.red(err)));
-})
-
-router.put('/update/:user', (req,res)=>{
-    const { user } = req.params;
-    schema.updateOne({userName:user}, req.body)
-    .then(()=>{
-        //res.redirect('/users');
-        res.send(`El usuario ${req.body.nombre} fue actualizado`)
-    })
-    .catch(err => res.send(chalk.red(err)));
-})
-
-router.put('/aprobar/:user', (req,res)=>{
-    const {user} = req.params;
-    schema.findOne({userName:user})
-    .then((user)=>{
-        user.activo = !user.activo;
-        user.save();
-        //res.redirect('/users');
-        res.send(`Estado del usuario: ${user.activo?"Activo":"Inactivo"}`)
-    })
-    .catch(err => res.send(chalk.red(err)));
-})
+})*/
 
 module.exports = router;

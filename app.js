@@ -6,9 +6,10 @@ const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const chalk = require('chalk');
-const indexRouter = require('./routes/comment');
+const commentRouter = require('./routes/comment');
 const postsRouter = require('./routes/posts');
 const usersRouter = require('./routes/users');
+const loginRouter = require('./routes/login');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv'); //se utiliza para variables de sesion "heroku"
 
@@ -22,21 +23,24 @@ app.set('view engine', 'ejs'); //Usamos EJS como plantilla
 app.use(express.json()); //método incorporado en express para reconocer el objeto de solicitud entrante como un objeto JSON
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public'))); //El rootargumento especifica el directorio raíz desde el que se sirven los activos estáticos
+
+//El siguiente código es básicamente un middleware que nos ayuda a “parsear” los datos que recibimos a través del protocolo http.
 app.use(bodyParser.urlencoded({ extended: true }));//interpretar parametros del html
 app.use(bodyParser.json())
 
 // Routers
-app.use('/comment', indexRouter);
+app.use('/comment', commentRouter);
 app.use('/posts', postsRouter);
 app.use('/users', usersRouter);
+app.use('/login', loginRouter);
 
 // Connect to DB
 const uri = process.env.MONGOURI; //Uri de acceso from mongo
 mongoose.connect(uri, {useNewUrlParser:true, useUnifiedTopology:true}) //Intento de coneccion
-.then(result => console.log('Coneccion Correcta'))
+.then(() => console.log('Coneccion Correcta'))
 .catch(err => console.log(chalk.red(err)))
 
-// Ciddlewares
+// Middlewares
 app.use(morgan('dev')); //para login
 app.use(express.urlencoded({ extended: false })); //la opción extendida permite elegir entre analizar los datos codificados en URL con la biblioteca de cadena de consulta (cuando es falsa ) o la biblioteca qs (cuando es verdadera)
 

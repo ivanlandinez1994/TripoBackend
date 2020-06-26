@@ -1,10 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-//mongoose.set('useNewUrlParser', true);
-//mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
-const dotenv = require('dotenv'); //se utiliza para variables de sesion "heroku"
-dotenv.config();
+const dotenv = require('dotenv'); //se utiliza para variables de sesion "heroku" y para poder usar .env
+dotenv.config(); //para poder usar .env
 
 const UserSchema = new Schema({ // se define una estructura con la que se guardar en mongo db
     nombre: {
@@ -19,17 +17,16 @@ const UserSchema = new Schema({ // se define una estructura con la que se guarda
     },
     dni: {
         type: String,
-        required: "El dni es obligatorio",
+        required: "Es necesario el DNI",
         unique:true,
         minlength: [6, "El minimo para el documento es de 6"],
         maxlength: [10, "El maximo para el documento es de 10"]
     },
     fechaNacimiento: Date,
-    ubicacion:[String],
     nroTelefono: String,
     userName: {
         type: String,
-        required: "El nombre de usuario es obligatorio",
+        required: "Es necesario un nombre de usuario",
         unique:true,
         minlength: [3, "El minimo para el nombre de usuario es de 3"]
     },
@@ -49,7 +46,7 @@ const UserSchema = new Schema({ // se define una estructura con la que se guarda
     },
     email: {
         type: String,
-        required: "El email de usuario es obligatorio",
+        required: "Es necesario un email",
         unique:true,
         minlength: [3, "El minimo para el email es de 3"]
     },

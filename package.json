@@ -15,8 +15,12 @@
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
+    "jsonwebtoken": "^8.5.1",
+    "jwt-simple": "^0.5.6",
+    "moment": "^2.27.0",
     "mongoose": "^5.9.18",
-    "morgan": "^1.9.1"
+    "morgan": "^1.9.1",
+    "node-datetime": "^2.1.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"

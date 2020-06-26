@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-//mongoose.set('useNewUrlParser', true);
-//mongoose.set('useFindAndModify', false);
+const schemaUser = require('../models/schemaUser');
 mongoose.set('useCreateIndex', true);
 const dotenv = require('dotenv'); //se utiliza para variables de sesion "heroku"
 dotenv.config();
+var fecha= Date.now();
 
 const PostSchema = new Schema({ // se define una estructura con la que se guardar en mongo db
     nombre: {
@@ -28,27 +28,18 @@ const PostSchema = new Schema({ // se define una estructura con la que se guarda
         horaApertura: Date,
         horaFin: Date
     }],
-    userName: {
-        type: String,
-        required: "El nombre de usuario es obligatorio",
-        minlength: [3, "El minimo para el nombre de usuario es de 3"],
+    user: { 
+        type: Schema.ObjectId, 
+        ref: schemaUser,
+        required: "Debe ingresar el id del usuario"
     },
+    fechaPublicacion: {
+        type: Date,
+        default: fecha
+    }
 }, {
     versionKey: false, //elimina el __V ("Versionado")
     collection: process.env.COLECCIONPOST 
 });
-
-/*PostSchema.virtual('userName').get(function() {
-    return this.uN;
-})
-.set(function(user) {
-    schema.find() //trae los registros de la base de datos
-    .where("userName").equals(userName)
-    //.where("publicaciones._id").equals(id)
-    .then((publicaciones) => {
-        publicaciones.push(req.body);
-        res.send("publicacion agregada correctamente");
-    })
-}); */
 
 module.exports = mongoose.model(process.env.COLECCIONPOST, PostSchema);

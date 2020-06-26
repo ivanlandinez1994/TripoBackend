@@ -7,7 +7,7 @@ const schemaComment = require('../models/schemaComentario');
 router.get('/:idPublicacion', (req, res)=>{ //retorna todas las publicaciones
     const { idPublicacion } = req.params;
     schemaComment.find()
-    .where("idPublicacion").equals(idPublicacion) //trae los registros de la base de datos
+    .where("publicacion").equals(idPublicacion) //trae los registros de la base de datos
     .then((comentarios) => {
         res.send(comentarios)
     })
