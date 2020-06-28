@@ -21,7 +21,7 @@ router.get('/', auth, (req, res)=>{ //retorna todas las publicaciones
 
 router.post('/add', auth, async (req, res)=>{ //agrega una publicacion
     for (let i in req.body.fotos){
-       var ruta = await uploadFile(req.body.fotos[i]);
+       var ruta = await uploadFile(req.body.fotos[i]).catch((err)=>{res.send(err)});
         req.body.fotos[i] = ruta;
     }
     const Publicacion = new schemaPost(req.body);
