@@ -9,9 +9,9 @@ router.get('/:idPublicacion', (req, res)=>{ //retorna todas las publicaciones
     schemaComment.find()
     .where("publicacion").equals(idPublicacion) //trae los registros de la base de datos
     .then((comentarios) => {
-        res.send(comentarios)
+        res.status(200).send(comentarios)
     })
-    .catch(err => res.send(chalk.red(err)));
+    .catch(err => res.status(500).send(chalk.red(err)));
 });
 
 router.post('/add', (req, res)=>{ //agrega una publicacion
@@ -19,9 +19,9 @@ router.post('/add', (req, res)=>{ //agrega una publicacion
     Comentario.save() //guarda registro de la base de datos
     .then(() => {
         //res.redirect('/users');
-        res.send(`Se agrego el comentario correctamente`)
+        res.status(200).send(`Se agrego el comentario correctamente`)
     })
-    .catch(err => res.send(chalk.red(err)));
+    .catch(err => res.status(500).send(chalk.red(err)));
 });
 
 router.delete('/delete/:id', (req,res)=>{
@@ -29,9 +29,9 @@ router.delete('/delete/:id', (req,res)=>{
     schemaPost.deleteOne({_id:id})
     .then(()=>{
         //res.redirect('/users');
-        res.send(`El comentario fue eliminado`)
+        res.status(200).send(`El comentario fue eliminado`)
     })
-    .catch(err => res.send(chalk.red(err)));
+    .catch(err => res.status(500).send(chalk.red(err)));
 })
 
 router.put('/update/:id', (req,res)=>{
@@ -39,9 +39,9 @@ router.put('/update/:id', (req,res)=>{
     schemaPublicacion.updateOne({_id:id}, req.body)
     .then(()=>{
         //res.redirect('/users');
-        res.send(`El comentario se actualizo correctamente.`)
+        res.status(200).send(`El comentario se actualizo correctamente.`)
     })
-    .catch(err => res.send(chalk.red(err)));
+    .catch(err => res.status(500).send(chalk.red(err)));
 })
 
 module.exports = router;
