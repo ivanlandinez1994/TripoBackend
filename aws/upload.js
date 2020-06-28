@@ -26,7 +26,7 @@ const sendImage = async (filename) => {
             throw err;
         }
         return data;
-    }).promise()
+    }).promise().catch((err)=>{"No se pudo subir el archivo "+err})
 
     return rutaImagen.Location
 }
