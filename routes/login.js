@@ -14,7 +14,7 @@ router.post('/signUp', (req,res)=>{
     .catch(err => res.status(500).send({message: `Error al crear el usuario: ${err}`}));
 });
 
-router.get('/signIn', (req,res)=>{
+router.post('/signIn', (req,res)=>{
     schemaUser.findOne({userName:req.body.userName})
     .then((user)=>{
         if (user.contrasenia===req.body.contrasenia)
