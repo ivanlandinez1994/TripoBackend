@@ -27,7 +27,7 @@ router.post('/signIn', (req,res)=>{
             res.status(400).send({message: `Contraseña Incorrecta`});
         }
     })
-    .catch(err => res.status(500).send({message: `No existe el usuario: ${err}`}));
+    .catch(err => res.status(500).send({message: `No existe el usuario`}));
 })
 
 router.get('/private', auth, (req,res)=>{
